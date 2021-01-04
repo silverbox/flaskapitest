@@ -1,0 +1,39 @@
+FROM python:3.8
+
+WORKDIR /flaskapi
+
+RUN apt update
+RUN apt install -y curl wget openssh-server openssh-client python3-pip python3-dev build-essential libssl-dev libffi-dev python3-setuptools libpcre3-dev
+
+RUN python3 -m pip install --upgrade pip
+RUN pip3 install uwsgi flask
+
+# set of success to execute
+# RUN pip3 install --no-cache-dir tensorflow==2.3.1
+# RUN pip3 install --no-cache-dir keras-bert==0.86.0
+# RUN pip3 install --no-cache-dir beautifulsoup4==4.9.1
+# RUN pip3 install --no-cache-dir textblob==0.15.3
+# RUN pip3 install --no-cache-dir PyMySQL==0.10.1
+# RUN pip3 install --no-cache-dir hickle==4.0.1
+# RUN pip3 install --no-cache-dir ktrain==0.21.3
+# RUN pip3 install --no-cache-dir scikit-learn==0.22.1
+
+# test with same as ktrain at collaboratory
+# the set success to execute and get results
+RUN pip3 install --no-cache-dir tensorflow==2.4.0
+RUN pip3 install --no-cache-dir keras-bert==0.86.0
+RUN pip3 install --no-cache-dir beautifulsoup4==4.6.3
+RUN pip3 install --no-cache-dir textblob==0.15.3
+RUN pip3 install --no-cache-dir ktrain==0.25.3
+RUN pip3 install --no-cache-dir scikit-learn==0.23.2
+
+# it's not succeeded.
+# COPY requirements.txt ./requirements.txt
+# RUN pip3 install --no-cache-dir -r requirements.txt
+
+# for make model
+RUN git clone https://github.com/laxmimerit/IMDB-Movie-Reviews-Large-Dataset-50k.git
+RUN pip3 install --no-cache-dir xlrd==1.2.0
+
+# uwsgi --ini /flaskapi/uwsgi.ini
+CMD ["uwsgi","--ini","/flaskapi/uwsgi.ini"]

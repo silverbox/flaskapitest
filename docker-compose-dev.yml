@@ -1,0 +1,26 @@
+version: '3.7'
+services:
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile-nginx
+    ports:
+      - 8880:80
+    volumes:
+      - ./log/nginx/:/var/log/nginx/
+      - ./nginx/nginx.conf-dev:/etc/nginx/nginx.conf
+    depends_on:
+      - flaskapi
+    container_name: flask-nginx
+
+  flaskapi:
+    build:
+      context: ./flaskapi
+      dockerfile: Dockerfile-flaskapi
+    ports:
+      - 8881:5000
+    volumes:
+      - ./log/flaskapi/:/var/log/flaskapi/
+      - ./flaskapi:/flaskapi
+    container_name: flask-flaskapi
+
